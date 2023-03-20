@@ -1,13 +1,8 @@
 #include "shared.h"
 
-LuaScriptManager::LuaScriptManager(void)
-{
-    rootconsole->AddRootConsoleCommand3("scripts", "Manage Scripts", this);
-}
-
 LuaScriptManager::~LuaScriptManager(void)
 {
-    rootconsole->RemoveRootConsoleCommand("scripts", this);
+    rootconsole->RemoveRootConsoleCommand(MENU_CMD, this);
     this->UnloadScripts();
 }
 
@@ -152,74 +147,3 @@ int LuaScriptManager::GetScriptCount(void)
 {
     return this->m_scripts.size();
 }
-
-#ifdef SOURCEMOD_BUILD
-void LuaScriptManager::OnRootConsoleCommand(const char *cmdname, const ICommandArgs *args)
-{
-    int argc = args->ArgC();
-
-    if (argc == 2)
-    {
-        rootconsole->ConsolePrint("SourceLua Scripts Menu:");
-        rootconsole->DrawGenericOption("info", "Information about a script");
-        rootconsole->DrawGenericOption("list", "Show loaded scripts");
-        rootconsole->DrawGenericOption("load", "Load a script");
-        rootconsole->DrawGenericOption("refresh", "Reloads/refreshes all scripts in the scripts folder");
-        rootconsole->DrawGenericOption("reload", "Reloads a script");
-        rootconsole->DrawGenericOption("unload", "Unload a script");
-        rootconsole->DrawGenericOption("unload_all", "Unloads all scripts");
-        return;
-    }
-
-    const char* command = args->Arg(2);
-
-    auto HasExtraParam = [](const char* cmd) -> bool
-    {
-        return strcmp(cmd, "load") == 0 || strcmp(cmd, "unload") == 0 || strcmp(cmd, "reload") == 0;
-    };
-
-    if (!HasExtraParam(command))
-    {
-        if (strcmp(command, "info") == 0)
-        {
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        } else if (strcmp(command, "list") == 0)
-        {
-            int scriptCount = this->GetScriptCount();
-
-            if (scriptCount == 0)
-            {
-                rootconsole->ConsolePrint("[%s] No scripts loaded", SMEXT_CONF_LOGTAG);
-                return;
-            }
-
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        } else if (strcmp(command, "refresh") == 0)
-        {
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        } else if (strcmp(command, "unload_all") == 0)
-        {
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        }
-    } else {
-        if (argc != 4)
-        {
-            rootconsole->ConsolePrint("[%s] Usage: sm scripts %, SMEXT_CONF_LOGTAGs <script name>", SMEXT_CONF_LOGTAG, command);
-            return;
-        }
-
-        const char* param = args->Arg(3);
-
-        if (strcmp(command, "load") == 0)
-        {
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        } else if (strcmp(command, "unload") == 0)
-        {
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        } else if (strcmp(command, "reload") == 0)
-        {
-            rootconsole->ConsolePrint("[%s] Not implemented %s", SMEXT_CONF_LOGTAG, command);
-        }
-    }
-}
-#endif
