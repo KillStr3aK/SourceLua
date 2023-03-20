@@ -13,3 +13,8 @@ void SourceLua::SDK_OnUnload(void)
 {
     LuaScripting::Release();
 }
+
+void SourceLua::SDK_OnAllLoaded(void)
+{
+    playerhelpers->AddClientListener(LuaScriptManager::GetInstance());
+}

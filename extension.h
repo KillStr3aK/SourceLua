@@ -25,7 +25,7 @@ public:
 	 * @brief This is called once all known extensions have been loaded.
 	 * Note: It is is a good idea to add natives here, if any are provided.
 	 */
-	//virtual void SDK_OnAllLoaded(void);
+	virtual void SDK_OnAllLoaded(void);
 
 	/**
 	 * @brief Called when the pause state is changed.
