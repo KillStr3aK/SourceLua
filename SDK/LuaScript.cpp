@@ -69,50 +69,27 @@ LuaRuntime* LuaScript::GetRuntime(void) const
 
 void LuaScript::ExceptionHandler(LuaException const& e)
 {
-    Console::Error("SCRIPT ERROR: %s\n%s", this->GetManifest()->GetScriptName(), e.what());
+    Console::Error("SCRIPT EXCEPTION: %s\n%s", this->GetManifest()->GetScriptName(), e.what());
 }
 
-void LuaScript::CallFunction(const char* forwardName)
+void LuaScript::LogMessage(const char* msg)
 {
-    LuaRef luaFunc = this->m_pRuntime->GetFunctionByName(forwardName);
-
-    if (luaFunc)
-    {
-        try {
-            luaFunc();
-        } catch(LuaException const& e)
-        {
-            this->ExceptionHandler(e);
-        }
-    }
+    Console::WriteLine("(script:%s): %s", this->GetName(), msg);
 }
 
-void LuaScript::OnScriptStart(void)
+void LuaScript::LogError(const char* error)
 {
-    this->CallFunction("OnScriptStart");
+    Console::WriteLine("(script:%s): SCRIPT ERROR: %s", this->GetName(), error);
 }
 
-void LuaScript::OnScriptEnd(void)
+void LuaScript::CallFunction(const char* functionName)
 {
-    this->CallFunction("OnScriptEnd");
+    this->CallFunction(functionName, NULL);
 }
 
-void LuaScript::OnAllScriptsLoaded(void)
+#ifdef SOURCEMOD_BUILD
+void LuaScript::SyncMaxClients(int maxClients)
 {
-    this->CallFunction("OnAllScriptsLoaded");
+    this->m_pRuntime->SetGlobalVariable("MaxClients", maxClients);
 }
-
-void LuaScript::OnAllPluginsLoaded(void)
-{
-    this->CallFunction("OnAllPluginsLoaded");
-}
-
-void LuaScript::OnMapStart(void)
-{
-    this->CallFunction("OnMapStart");
-}
-
-void LuaScript::OnMapEnd(void)
-{
-    this->CallFunction("OnMapEnd");
-}
+#endif

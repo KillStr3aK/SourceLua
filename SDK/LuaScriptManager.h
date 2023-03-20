@@ -20,11 +20,14 @@
 #define TAG "Lua"
 #endif
 
+#define DEFINE_VIRTUAL_OVERRIDE(NAME, PARAMS, NAMES) void NAME(PARAMS) override { for (const auto& script : this->m_scripts) { if (script.second->IsRunning()) { script.second->NAME(NAMES); } } }
+#define DEFINE_VIRTUAL_OVERRIDE_RETURN(RETTYPE, NAME, PARAMS, NAMES, RETVALUE) RETTYPE NAME(PARAMS) override { for (const auto& script : this->m_scripts) { if (script.second->IsRunning()) { script.second->NAME(NAMES); } } return RETVALUE; }
+
 class LuaScript;
 class LuaScriptManifest;
 
 #ifdef SOURCEMOD_BUILD
-class LuaScriptManager : public CSingleton<LuaScriptManager>, public ConsoleMenu
+class LuaScriptManager : public CSingleton<LuaScriptManager>, public ConsoleMenu, public IClientListener
 #else
 class LuaScriptManager : public CSingleton<LuaScriptManager>
 #endif
@@ -85,6 +88,20 @@ public:
     LuaScript* GetScriptByName(const char* scriptName);
 
     int GetScriptCount(void);
+
+    DEFINE_VIRTUAL_OVERRIDE_RETURN(bool, InterceptClientConnect, P(int client, char* error, size_t maxlength), P(client, error, maxlength), true);
+    DEFINE_VIRTUAL_OVERRIDE_RETURN(bool, OnClientPreAdminCheck, int client, client, true);
+
+    DEFINE_VIRTUAL_OVERRIDE(OnClientConnected, int client, client);
+    DEFINE_VIRTUAL_OVERRIDE(OnClientPutInServer, int client, client);
+    DEFINE_VIRTUAL_OVERRIDE(OnClientDisconnecting, int client, client);
+    DEFINE_VIRTUAL_OVERRIDE(OnClientDisconnected, int client, client);
+    DEFINE_VIRTUAL_OVERRIDE(OnClientPostAdminCheck, int client, client);
+    DEFINE_VIRTUAL_OVERRIDE(OnClientSettingsChanged, int client, client);
+    DEFINE_VIRTUAL_OVERRIDE(OnClientAuthorized, P(int client, const char* authstring), P(client, authstring));
+
+    DEFINE_VIRTUAL_OVERRIDE(OnMaxPlayersChanged, int newvalue, newvalue);
+    DEFINE_VIRTUAL_OVERRIDE(OnServerActivated, int max_clients, max_clients);
 private:
     std::map<std::string, LuaScript*> m_scripts;
 };
