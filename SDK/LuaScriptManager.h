@@ -85,7 +85,6 @@ public:
     void UnloadScript(const char* name);
     void UnloadScript(LuaScript* script);
 
-    void LoadLibraries(LuaScript* script);
     LuaScript* GetScriptByName(const char* scriptName);
     int GetScriptCount(void);
 
