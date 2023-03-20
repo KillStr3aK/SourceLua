@@ -102,6 +102,7 @@ public:
 
     LUA_FORWARD(OnAllPluginsLoaded);
 
+    LUA_FORWARD(OnMapInit);
     LUA_FORWARD(OnMapStart);
     LUA_FORWARD(OnMapEnd);
 #endif

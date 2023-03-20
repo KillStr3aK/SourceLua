@@ -85,8 +85,8 @@ public:
     void UnloadScript(const char* name);
     void UnloadScript(LuaScript* script);
 
+    void LoadLibraries(LuaScript* script);
     LuaScript* GetScriptByName(const char* scriptName);
-
     int GetScriptCount(void);
 
     DEFINE_VIRTUAL_OVERRIDE_RETURN(bool, InterceptClientConnect, P(int client, char* error, size_t maxlength), P(client, error, maxlength), true);
