@@ -90,6 +90,14 @@ class ConsoleMenu : public IRootConsoleCommand, public ClassMap<std::string, Con
 {
 public:
     ConsoleMenu(const char* name) { strcpy(this->m_name, name); }
+    ~ConsoleMenu(void)
+    {
+        for (const auto category : this->GetEntries())
+        {
+            rootconsole->RemoveRootConsoleCommand(category.second->GetName(), this);
+        }
+    }
+
     void SetMenuName(const char* name) { strcpy(this->m_name, name); }
     const char* GetMenuName(void) { return this->m_name; }
 
