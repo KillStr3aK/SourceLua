@@ -69,7 +69,7 @@ LuaRuntime* LuaScript::GetRuntime(void) const
 
 void LuaScript::ExceptionHandler(LuaException const& e)
 {
-    Console::Error("SCRIPT EXCEPTION: %s\n%s", this->GetManifest()->GetScriptName(), e.what());
+    Console::Error("(script:%s): SCRIPT EXCEPTION:\n%s", this->GetManifest()->GetScriptName(), e.what());
 }
 
 void LuaScript::LogMessage(const char* msg)
