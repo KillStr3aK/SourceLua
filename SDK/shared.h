@@ -8,15 +8,14 @@
     #endif
 #endif
 
-#include "Common/CSingleton.h"
-
 #include "Libs/json/json.hpp"
 using json = nlohmann::json;
 
+#include "Common/CSingleton.h"
+#include "Common/Console.h"
+
 #include "LuaEngine.h"
 using namespace luabridge;
-
-#include "Console.h"
 
 #include "LuaScriptManifest.h"
 #include "LuaScript.h"

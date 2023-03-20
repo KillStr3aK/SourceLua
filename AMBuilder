@@ -15,7 +15,7 @@ sourceFiles = [
   'SDK/LuaScript.cpp',
   'SDK/LuaScripting.cpp',
   'SDK/LuaScriptManager.cpp',
-  'SDK/Console.cpp',
+  'SDK/Common/Console.cpp',
 
   # Lua source
   'SDK/Libs/Lua/lua.c',
