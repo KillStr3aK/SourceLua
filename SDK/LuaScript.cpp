@@ -67,42 +67,52 @@ LuaRuntime* LuaScript::GetRuntime(void) const
     return this->m_pRuntime;
 }
 
-void LuaScript::CallForward(const char* forwardName)
+void LuaScript::ExceptionHandler(LuaException const& e)
 {
-    LuaRef forwardFunction = this->m_pRuntime->GetFunctionByName(forwardName);
+    Console::Error("SCRIPT ERROR: %s\n%s", this->GetManifest()->GetScriptName(), e.what());
+}
 
-    if (forwardFunction)
+void LuaScript::CallFunction(const char* forwardName)
+{
+    LuaRef luaFunc = this->m_pRuntime->GetFunctionByName(forwardName);
+
+    if (luaFunc)
     {
-        forwardFunction();
+        try {
+            luaFunc();
+        } catch(LuaException const& e)
+        {
+            this->ExceptionHandler(e);
+        }
     }
 }
 
 void LuaScript::OnScriptStart(void)
 {
-    this->CallForward("OnScriptStart");
+    this->CallFunction("OnScriptStart");
 }
 
 void LuaScript::OnScriptEnd(void)
 {
-    this->CallForward("OnScriptEnd");
+    this->CallFunction("OnScriptEnd");
 }
 
 void LuaScript::OnAllScriptsLoaded(void)
 {
-    this->CallForward("OnAllScriptsLoaded");
+    this->CallFunction("OnAllScriptsLoaded");
 }
 
 void LuaScript::OnAllPluginsLoaded(void)
 {
-    this->CallForward("OnAllPluginsLoaded");
+    this->CallFunction("OnAllPluginsLoaded");
 }
 
 void LuaScript::OnMapStart(void)
 {
-    this->CallForward("OnMapStart");
+    this->CallFunction("OnMapStart");
 }
 
 void LuaScript::OnMapEnd(void)
 {
-    this->CallForward("OnMapEnd");
+    this->CallFunction("OnMapEnd");
 }

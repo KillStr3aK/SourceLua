@@ -64,6 +64,8 @@ public:
     LoadScriptResult GetState(void) const;
     void SetState(LoadScriptResult state);
 
+    void ExceptionHandler(LuaException const& e);
+
     bool IsRunning(void);
 
     void OnScriptStart(void);
@@ -76,7 +78,7 @@ public:
     void OnMapEnd(void);
 
 private:
-    void CallForward(const char* forwardName);
+    void CallFunction(const char* forwardName);
 
     char m_scriptName[PLATFORM_MAX_PATH];
     LoadScriptResult m_state;
