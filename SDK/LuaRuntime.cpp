@@ -51,7 +51,7 @@ void LuaRuntime::SetGlobalVariable(const char* name, int value)
 void LuaRuntime::SetGlobalVariable(const char* name, unsigned int value)
 {
     char szBuffer[65];
-    sprintf(szBuffer, "%s = %d;", name, value);
+    sprintf(szBuffer, "%s = %u;", name, value);
     this->ExecuteString(szBuffer);
 }
 
@@ -72,7 +72,7 @@ void LuaRuntime::SetGlobalVariable(const char* name, bool value)
 void LuaRuntime::SetGlobalVariable(const char* name, float value)
 {
     char szBuffer[32];
-    sprintf(szBuffer, "%s = %d;", name, value);
+    sprintf(szBuffer, "%s = %f;", name, value);
     this->ExecuteString(szBuffer);
 }
 
