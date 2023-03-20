@@ -8,6 +8,9 @@
     #endif
 #endif
 
+// Current compiler doesn't support parenthesis to pass multiple things as the same param for macros
+#define P(...) __VA_ARGS__
+
 #include "Libs/json/json.hpp"
 using json = nlohmann::json;
 
@@ -17,8 +20,8 @@ using json = nlohmann::json;
 #include "LuaEngine.h"
 using namespace luabridge;
 
+#include "LuaScriptManager.h"
 #include "LuaScriptManifest.h"
 #include "LuaScript.h"
 #include "LuaRuntime.h"
-#include "LuaScriptManager.h"
 #include "LuaScripting.h"
