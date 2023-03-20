@@ -2,7 +2,6 @@
 
 LuaScriptManager::~LuaScriptManager(void)
 {
-    rootconsole->RemoveRootConsoleCommand(MENU_CMD, this);
     this->UnloadScripts();
 }
 
