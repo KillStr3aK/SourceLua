@@ -18,6 +18,9 @@ void LuaRuntime::InitializeEnvironment(void)
 #ifdef SOURCEMOD_BUILD
     SET_RUNTIME_VALUE("MaxClients", playerhelpers->GetMaxClients());
     SET_RUNTIME_VALUE("MAXPLAYERS", SM_MAXPLAYERS);
+
+    this->AddFunction<void, std::string>("LogMessage", [&](std::string msg) { this->GetScript()->LogMessage(msg.c_str()); });
+    this->AddFunction<void, std::string>("LogError", [&](std::string error) { this->GetScript()->LogError(error.c_str()); });
 #endif
 }
 
@@ -41,45 +44,15 @@ LuaRef LuaRuntime::GetFunctionByName(const char* name)
     return this->GetGlobalByName(name);
 }
 
-void LuaRuntime::SetGlobalVariable(const char* name, int value)
+template<typename T>
+void LuaRuntime::SetGlobalVariable(const char* name, T value)
 {
-    char szBuffer[32];
-    sprintf(szBuffer, "%s = %d;", name, value);
-    this->ExecuteString(szBuffer);
-}
-
-void LuaRuntime::SetGlobalVariable(const char* name, unsigned int value)
-{
-    char szBuffer[65];
-    sprintf(szBuffer, "%s = %u;", name, value);
-    this->ExecuteString(szBuffer);
-}
-
-void LuaRuntime::SetGlobalVariable(const char* name, const char* value)
-{
-    char szBuffer[32];
-    sprintf(szBuffer, "%s = \"%s\";", name, value);
-    this->ExecuteString(szBuffer);
-}
-
-void LuaRuntime::SetGlobalVariable(const char* name, bool value)
-{
-    char szBuffer[32];
-    sprintf(szBuffer, "%s = %d;", name, value);
-    this->ExecuteString(szBuffer);
-}
-
-void LuaRuntime::SetGlobalVariable(const char* name, float value)
-{
-    char szBuffer[32];
-    sprintf(szBuffer, "%s = %f;", name, value);
-    this->ExecuteString(szBuffer);
+    luabridge::setGlobal(this->m_state, value, name);
 }
 
 template<class ReturnType, class... Params>
 void LuaRuntime::AddFunction(const char* name, std::function<ReturnType(Params...)> function)
 {
     luabridge::getGlobalNamespace(this->m_state)
-        .addFunction(name, function)
-    .endNamespace();
+        .addFunction(name, function);
 }

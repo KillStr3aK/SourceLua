@@ -69,22 +69,27 @@ LuaRuntime* LuaScript::GetRuntime(void) const
 
 void LuaScript::ExceptionHandler(LuaException const& e)
 {
-    Console::Error("(script:%s): SCRIPT EXCEPTION:\n%s", this->GetManifest()->GetScriptName(), e.what());
+    Console::Error("(script: %s): SCRIPT EXCEPTION:\n%s", this->GetManifest()->GetScriptName(), e.what());
 }
 
 void LuaScript::LogMessage(const char* msg)
 {
-    Console::WriteLine("(script:%s): %s", this->GetName(), msg);
+    Console::WriteLine("(script: %s): %s", this->GetName(), msg);
 }
 
 void LuaScript::LogError(const char* error)
 {
-    Console::WriteLine("(script:%s): SCRIPT ERROR: %s", this->GetName(), error);
+    Console::WriteLine("(script: %s): SCRIPT ERROR: %s", this->GetName(), error);
 }
 
 void LuaScript::CallFunction(const char* functionName)
 {
     this->CallFunction(functionName, NULL);
+}
+
+void LuaScript::Initialize(void)
+{
+    this->GetRuntime()->InitializeEnvironment();
 }
 
 #ifdef SOURCEMOD_BUILD

@@ -74,6 +74,8 @@ public:
     void LogMessage(const char* msg);
     void LogError(const char* error);
 
+    void Initialize(void);
+
     LUA_FORWARD(OnScriptStart);
     LUA_FORWARD(OnScriptEnd);
 

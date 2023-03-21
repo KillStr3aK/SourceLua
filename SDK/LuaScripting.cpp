@@ -7,8 +7,13 @@ auto LuaScripting::Initialize(void) -> void
 	Console::WriteLine("Initialized!");
 
     Console::WriteLine("Loading scripts..");
-    // LuaScriptManager::GetInstance()->LoadScripts(LIBS_FOLDER);
-    LuaScriptManager::GetInstance()->LoadScripts(SCRIPTS_FOLDER);
+
+    try {
+        LuaScriptManager::GetInstance()->LoadScripts(SCRIPTS_FOLDER);
+    } catch (std::exception e)
+    {
+        Console::Error(e.what());
+    }
 }
 
 auto LuaScripting::Release(void) -> void

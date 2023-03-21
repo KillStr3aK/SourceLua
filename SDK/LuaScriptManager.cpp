@@ -72,7 +72,7 @@ void LuaScriptManager::LoadScript(const char* scriptName)
 
         Console::Error("Unable to load script '%s' (%s)", scriptName, error);
     } else {
-        script->GetRuntime()->InitializeEnvironment();
+        script->Initialize();
         script->OnScriptStart();
         script->SetState(LoadScriptResult::Running);
         Console::WriteLine("Script '%s' has been loaded", scriptName);
