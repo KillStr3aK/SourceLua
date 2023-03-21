@@ -11,6 +11,7 @@ bool SourceLua::SDK_OnLoad(char* error, size_t maxlength, bool late)
 
 void SourceLua::SDK_OnUnload(void)
 {
+    playerhelpers->RemoveClientListener(LuaScriptManager::GetInstance());
     LuaScripting::Release();
 }
 
