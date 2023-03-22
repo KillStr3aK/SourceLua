@@ -64,6 +64,16 @@ void LuaScriptManager::LoadScript(const char* scriptName)
                 strcpy(error, "Could not parse script manifest file. (ERROR)");
             } break;
 
+            case LoadScriptResult::NoSuchFile:
+            {
+                strcpy(error, "File does not exists");
+            } break;
+
+            case LoadScriptResult::ParseError:
+            {
+                strcpy(error, "Unable to parse script");
+            } break;
+
             default:
             {
                 strcpy(error, "Unknown error happened during script loading.");
@@ -71,6 +81,7 @@ void LuaScriptManager::LoadScript(const char* scriptName)
         }
 
         Console::Error("Unable to load script '%s' (%s)", scriptName, error);
+        delete script;
     } else {
         script->Initialize();
         script->OnScriptStart();

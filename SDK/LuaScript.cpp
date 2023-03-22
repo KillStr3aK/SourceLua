@@ -17,6 +17,12 @@ LuaScript::LuaScript(const char* scriptName) : m_state(LoadScriptResult::Initial
 
 #ifdef SOURCEMOD_BUILD
         g_pSM->BuildPath(Path_SM, filePath, sizeof(filePath), "%s/%s/%s", SCRIPTS_FOLDER, this->m_pManifest->GetScriptName(), file.c_str());
+
+        if (!libsys->PathExists(filePath))
+        {
+            this->SetState(LoadScriptResult::NoSuchFile);
+            return;
+        }
 #endif
 
 #ifdef SOURCEMOD_BUILD
@@ -27,11 +33,19 @@ LuaScript::LuaScript(const char* scriptName) : m_state(LoadScriptResult::Initial
 
         if (!fileExtension || strcmp(fileExtension, "lua") != 0)
         {
-            Console::Error("Script files must have the \".lua\" extension, skipping file '%s'", file);
-            continue;
+            this->SetState(LoadScriptResult::NoSuchFile);
+            return;
         }
 
-        this->GetRuntime()->LoadFile(filePath);
+        LuaRuntime* runtime = this->GetRuntime();
+        runtime->LoadFile(filePath);
+
+        if (runtime->GetRunState() != LUA_ENGINE_NO_ERROR)
+        {
+            this->LogError(runtime->GetLastError());
+            this->SetState(LoadScriptResult::ParseError);
+            return;
+        }
     }
 
     this->SetState(LoadScriptResult::Success);
