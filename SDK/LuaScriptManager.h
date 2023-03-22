@@ -7,6 +7,7 @@
 
 #include "shared.h"
 #include "sourcemod/ConsoleMenu.h"
+#include "sourcemod/EventManager.h"
 
 #define LIBS_FOLDER "lua/libs"
 #define SCRIPTS_FOLDER "lua/scripts"

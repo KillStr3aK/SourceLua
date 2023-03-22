@@ -9,10 +9,7 @@ void LuaScriptManager::UnloadScripts(void)
 {
     for (const auto& script : this->m_scripts)
     {
-        if (script.second->IsRunning())
-        {
-            this->UnloadScript(script.second);
-        }
+        this->UnloadScript(script.second);
     }
 
     this->m_scripts.clear();
@@ -32,9 +29,13 @@ void LuaScriptManager::UnloadScript(LuaScript* script)
 {
     // ?
     if (!script->IsRunning())
+    {
+        delete script;
         return;
+    }
 
     script->OnScriptEnd();
+    delete script;
 }
 
 void LuaScriptManager::LoadScript(const char* scriptName)
@@ -146,12 +147,12 @@ void LuaScriptManager::LoadScripts(const char* relativeDirectoryPath)
     }
 }
 
-LuaScript* LuaScriptManager::GetScriptByName(const char* directoryName)
+LuaScript* LuaScriptManager::GetScriptByName(const char* scriptName)
 {
-    if (this->m_scripts.find(directoryName) == this->m_scripts.end())
+    if (this->m_scripts.find(scriptName) == this->m_scripts.end())
         return NULL;
 
-    return this->m_scripts[directoryName];
+    return this->m_scripts[scriptName];
 }
 
 int LuaScriptManager::GetScriptCount(void)
