@@ -20,6 +20,8 @@ using json = nlohmann::json;
 #include "LuaEngine.h"
 using namespace luabridge;
 
+#include "sourcemod/EventListener.h"
+
 #include "LuaScriptManager.h"
 #include "LuaScriptManifest.h"
 #include "LuaScript.h"
