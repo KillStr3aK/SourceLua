@@ -19,3 +19,8 @@ void SourceLua::SDK_OnAllLoaded(void)
 {
     playerhelpers->AddClientListener(LuaScriptManager::GetInstance());
 }
+
+bool SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
+{
+    GET_V_IFACE_CURRENT(GetEngineFactory, gameevents, IGameEventManager2, INTERFACEVERSION_GAMEEVENTSMANAGER2);
+}
