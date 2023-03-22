@@ -12,6 +12,10 @@ public:
 
     void InitializeEnvironment(void);
 
+#ifdef SOURCEMOD_BUILD
+    void InitializeSourceMod(void);
+#endif
+
     LuaScript* GetScript(void);
     int GetInstanceID(void);
 

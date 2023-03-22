@@ -16,13 +16,20 @@ LuaRuntime::LuaRuntime(LuaScript* script)
 void LuaRuntime::InitializeEnvironment(void)
 {
 #ifdef SOURCEMOD_BUILD
+    this->InitializeSourceMod();
+#endif
+}
+
+#ifdef SOURCEMOD_BUILD
+void LuaRuntime::InitializeSourceMod(void)
+{
     SET_RUNTIME_VALUE("MaxClients", playerhelpers->GetMaxClients());
     SET_RUNTIME_VALUE("MAXPLAYERS", SM_MAXPLAYERS);
 
     this->AddFunction<void, std::string>("LogMessage", [&](std::string msg) { this->GetScript()->LogMessage(msg.c_str()); });
     this->AddFunction<void, std::string>("LogError", [&](std::string error) { this->GetScript()->LogError(error.c_str()); });
-#endif
 }
+#endif
 
 LuaScript* LuaRuntime::GetScript(void)
 {
