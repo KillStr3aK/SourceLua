@@ -1,6 +1,6 @@
 #include "shared.h"
 
-ILuaEngine::ILuaEngine(void) : m_state(luaL_newstate())
+ILuaEngine::ILuaEngine(void) : m_state(luaL_newstate()), m_runState(0)
 {
 	luaL_openlibs(this->m_state);
 }
@@ -22,19 +22,33 @@ lua_State* ILuaEngine::GetState()
 void ILuaEngine::LoadFile(const char* file)
 {
 	if (!file || !this->m_state)
-		return;
+	{
+        this->ErrorHandler(1, "File is invalid, or lua state does not exists.");
+        return;
+    }
 
 	int state = luaL_dofile(this->m_state, file);
-	this->ErrorHandler(state);
+
+    if (state)
+    {
+        this->ErrorHandler(state);
+    }
 }
 
 void ILuaEngine::ExecuteString(const char* expression)
 {
 	if (!expression || !this->m_state)
-		return;
+	{
+        this->ErrorHandler(1, "Expression is invalid, or lua state does not exists.");
+        return;
+    }
 
 	int state = luaL_dostring(this->m_state, expression);
-	this->ErrorHandler(state);
+
+    if (state)
+    {
+        this->ErrorHandler(state);
+    }
 }
 
 void ILuaEngine::Reset(void)
@@ -55,9 +69,22 @@ void ILuaEngine::ErrorHandler(int state)
 		this->m_error = lua_tostring(m_state, -1);
 		lua_pop(m_state, 1);
 	}
+
+    this->m_runState = state;
+}
+
+void ILuaEngine::ErrorHandler(int state, const char* error)
+{
+    this->m_error = error;
+    this->m_runState = state;
 }
 
 const char* ILuaEngine::GetLastError(void)
 {
     return this->m_error;
+}
+
+int ILuaEngine::GetRunState(void)
+{
+    return this->m_runState;
 }
