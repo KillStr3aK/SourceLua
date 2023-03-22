@@ -5,7 +5,7 @@
 
 #include "shared.h"
 
-class LuaRuntime : public ILuaEngine
+class LuaRuntime final : public ILuaEngine
 {
 public:
     LuaRuntime(LuaScript* script);
