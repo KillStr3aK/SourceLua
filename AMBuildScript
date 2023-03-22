@@ -241,7 +241,7 @@ class ExtensionConfig(object):
       os.path.join(mms_path, 'sourcehook'),
     ]
 
-    compiler.defines += ['META_NO_HL2SDK']
+    compiler.defines += ['META_NO_HL2SDK', 'SOURCEMOD_BUILD']
 
     if compiler.like('msvc'):
       compiler.defines += ['COMPILER_MSVC', 'COMPILER_MSVC32']
