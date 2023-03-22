@@ -70,7 +70,10 @@ else:
 
 project.sources += sourceFiles
 
-binary = Extension.HL2Config(project, projectName + '.ext')
+for sdk_name in Extension.sdks:
+  sdk = Extension.sdks[sdk_name]
+
+  binary = Extension.HL2Config(project, projectName + '.ext', sdk)
 
 Extension.extensions = builder.Add(project)
 
