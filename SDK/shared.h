@@ -1,4 +1,5 @@
 #include "../extension.h"
+#include "sourcemod/hl2sdk.h"
 
 #ifndef PLATFORM_MAX_PATH
     #ifdef SOURCEMOD_BUILD
